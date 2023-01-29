@@ -1,7 +1,6 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
-import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.util.Util;
 
 import java.sql.PreparedStatement;
@@ -17,7 +16,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-        try (Statement statement = Util.connection.createStatement())
+        try (Statement statement = Util.getConnection().createStatement())
         {
             String SQL = "create table users (id bigint primary key auto_increment" +
                     ", name varchar(20) not null, lastname varchar(30) not null" +
@@ -29,7 +28,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        try (Statement statement = Util.connection.createStatement()) {
+        try (Statement statement = Util.getConnection().createStatement()) {
             String SQL = "drop table users";
             statement.executeUpdate(SQL);
         } catch (SQLException e) {
@@ -39,7 +38,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void saveUser(String name, String lastName, byte age) {
         String SQL = "insert into users (name, lastname, age) values (?, ?, ?)";
-        try (PreparedStatement statement = Util.connection.prepareStatement(SQL)) {
+        try (PreparedStatement statement = Util.getConnection().prepareStatement(SQL)) {
             statement.setString(1, name);
             statement.setString(2, lastName);
             statement.setByte(3, age);
@@ -52,7 +51,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String SQL = "delete from users where id = ?";
-        try (PreparedStatement statement = Util.connection.prepareStatement(SQL)) {
+        try (PreparedStatement statement = Util.getConnection().prepareStatement(SQL)) {
          statement.setLong(1, id);
 
          statement.executeUpdate();
@@ -64,7 +63,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
-        try (Statement statement = Util.connection.createStatement()) {
+        try (Statement statement = Util.getConnection().createStatement()) {
             String SQL = "select * from users";
             ResultSet result = statement.executeQuery(SQL);
 
@@ -86,7 +85,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try (Statement statement = Util.connection.createStatement()) {
+        try (Statement statement = Util.getConnection().createStatement()) {
             String SQL = "delete from users";
             statement.executeUpdate(SQL);
         } catch (SQLException e) {
