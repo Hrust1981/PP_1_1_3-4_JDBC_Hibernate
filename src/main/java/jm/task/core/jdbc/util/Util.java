@@ -29,16 +29,18 @@ public class Util {
     private static SessionFactory sessionFactory = null;
 
     static {
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(User.class);
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(User.class)
+                .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
+                .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/mydb")
+                .setProperty("hibernate.connection.username", "root")
+                .setProperty("hibernate.connection.password", "mysql")
+                .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
+                .setProperty("hibernate.show_sql", "false");
         sessionFactory = configuration.buildSessionFactory();
     }
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
-
-    public static void closeSession() {
-        sessionFactory.close();
     }
 }
