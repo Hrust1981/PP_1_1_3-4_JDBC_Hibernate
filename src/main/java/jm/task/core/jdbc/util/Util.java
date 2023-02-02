@@ -1,9 +1,5 @@
 package jm.task.core.jdbc.util;
 
-import jm.task.core.jdbc.model.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,22 +19,5 @@ public class Util {
             e.printStackTrace();
         }
         return connection;
-    }
-
-    //Соединение с БД средствами Hibernate
-    private static SessionFactory sessionFactory = null;
-
-    static {
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(User.class);
-        sessionFactory = configuration.buildSessionFactory();
-    }
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public static void closeSession() {
-        sessionFactory.close();
     }
 }
